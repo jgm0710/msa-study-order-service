@@ -27,8 +27,8 @@ class KafkaConfiguration {
     fun producerFactory(): ProducerFactory<String, String> {
         val configurationProperties =  HashMap<String, Any>()
         configurationProperties[ProducerConfig.BOOTSTRAP_SERVERS_CONFIG] = BROKER_CONNECTION
-        configurationProperties[ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG] = StringSerializer::class.java
-        configurationProperties[ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG] = StringSerializer::class.java
+        configurationProperties[ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG] = StringSerializer::class.qualifiedName?:""
+        configurationProperties[ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG] = StringSerializer::class.qualifiedName?:""
         return  DefaultKafkaProducerFactory(configurationProperties)
     }
 
@@ -42,8 +42,8 @@ class KafkaConfiguration {
         val properties = HashMap<String, Any>()
         properties[ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG] = BROKER_CONNECTION
         properties[ConsumerConfig.GROUP_ID_CONFIG] = "consumerGroupId"
-        properties[ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG] = StringDeserializer::class
-        properties[ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG] = StringDeserializer::class
+        properties[ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG] = StringDeserializer::class.qualifiedName?:""
+        properties[ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG] = StringDeserializer::class.qualifiedName?:""
 
         return DefaultKafkaConsumerFactory<String, String>(properties)
     }

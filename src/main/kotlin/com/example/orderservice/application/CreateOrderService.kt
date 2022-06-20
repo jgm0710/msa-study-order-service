@@ -1,7 +1,7 @@
 package com.example.orderservice.application
 
 import com.example.orderservice.application.command.CreateOrderCommand
-import com.example.orderservice.domain.order.CreateOrderEventPublisher
+import com.example.orderservice.domain.order.OrderCreatedEventPublisher
 import com.example.orderservice.domain.order.Order
 import com.example.orderservice.domain.order.OrderRepository
 import org.springframework.stereotype.Service
@@ -17,17 +17,19 @@ import java.util.*
 @Service
 class CreateOrderService(
     val orderRepository: OrderRepository,
-    val createOrderEventPublisher: CreateOrderEventPublisher
+    val orderCreatedEventPublisher: OrderCreatedEventPublisher
 ) {
 
 
     @Transactional
-    fun createOrder(createOrderCommand: CreateOrderCommand): UUID {
-        val order = Order.createOrder(createOrderCommand.toCreateOrderEntityCommand())
+    fun createOrder(command: CreateOrderCommand): UUID {
+        val resultWithDomainEvent = Order.createOrder(command.toCreateOrderEntityCommand())
+
+        val order = resultWithDomainEvent.domain
 
         val savedOrder  = orderRepository.save(order)
 
-        createOrderEventPublisher.publish(savedOrder)
+        orderCreatedEventPublisher.publish(savedOrder::class.qualifiedName?:"", savedOrder.id, resultWithDomainEvent.event)
 
         return savedOrder.id
     }

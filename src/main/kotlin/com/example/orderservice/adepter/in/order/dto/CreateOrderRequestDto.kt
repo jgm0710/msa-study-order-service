@@ -2,7 +2,6 @@ package com.example.orderservice.adepter.`in`.order.dto
 
 import com.example.orderservice.application.command.CreateOrderCommand
 import com.example.orderservice.domain.order.*
-import org.slf4j.LoggerFactory
 import java.util.*
 
 /**
@@ -18,7 +17,7 @@ data class CreateOrderRequestDto(
 
     fun toCreateOrderCommand(): CreateOrderCommand {
         return CreateOrderCommand(
-            usedReward = usedRewards.map { it.toDomain() },
+            usedRewards = usedRewards.map { it.toDomain() },
             ordererId = UUID.fromString(ordererId)
         )
     }

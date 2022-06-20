@@ -1,12 +1,13 @@
 package com.example.orderservice.adepter.out.order
 
-import com.example.orderservice.domain.order.CreateOrderEventPublisher
-import com.example.orderservice.domain.order.Order
+import com.example.orderservice.domain.order.OrderCreatedEventPublisher
+import com.example.orderservice.domain.order.OrderCreatedEvent
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
 import org.slf4j.LoggerFactory
 import org.springframework.kafka.core.KafkaTemplate
 import org.springframework.stereotype.Service
+import java.util.*
 
 /**
  *
@@ -17,17 +18,16 @@ import org.springframework.stereotype.Service
 @Service
 class KafkaCreateOrderEventPublisher(
     val kafkaTemplate: KafkaTemplate<String,String>
-) : CreateOrderEventPublisher{
+) : OrderCreatedEventPublisher{
 
     val logger = LoggerFactory.getLogger(this::class.java)
-    private final val topic = "create-order-topic"
 
-    override fun publish(order: Order) {
+    override fun publish(aggregateType: String, orderId : UUID, orderCreatedEvent: OrderCreatedEvent) {
         val objectMapper = ObjectMapper()
 
-        val jsonData = objectMapper.registerModule(JavaTimeModule()).writeValueAsString(order)
+        val jsonData = objectMapper.registerModule(JavaTimeModule()).writeValueAsString(orderCreatedEvent)
 
-        kafkaTemplate.send(topic, jsonData)
-        logger.info("orderDto : [${jsonData}]")
+        logger.info("publish order created event. orderCreatedEvent : [${jsonData}]")
+        kafkaTemplate.send(aggregateType, orderId.toString(), jsonData)
     }
 }

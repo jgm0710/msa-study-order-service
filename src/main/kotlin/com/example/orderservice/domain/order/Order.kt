@@ -1,5 +1,6 @@
 package com.example.orderservice.domain.order
 
+import com.example.orderservice.common.ResultWithDomainEvent
 import java.time.Instant
 import java.util.*
 
@@ -19,18 +20,16 @@ class Order(
 
 
     companion object {
-        fun createOrder(createOrderEntityCommand: CreateOrderEntityCommand) : Order{
-            return Order(
+        fun createOrder(createOrderEntityCommand: CreateOrderEntityCommand): ResultWithDomainEvent<Order, OrderCreatedEvent> {
+            val order = Order(
                 id = UUID.randomUUID(),
                 ordererId = createOrderEntityCommand.ordererId,
                 usedRewards = createOrderEntityCommand.usedReward,
                 status = OrderStatus.CREATED_PENDING,
                 createdAt = Instant.now(),
             )
+            return  ResultWithDomainEvent(order, OrderCreatedEvent(order))
         }
     }
 
-    fun modify(status: OrderStatus) {
-
-    }
 }
