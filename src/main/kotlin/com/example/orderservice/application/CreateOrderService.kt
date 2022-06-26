@@ -4,6 +4,7 @@ import com.example.orderservice.application.command.CreateOrderCommand
 import com.example.orderservice.application.command.CreateOrderSuccessCommand
 import com.example.orderservice.application.exception.OrderNotFoundException
 import com.example.orderservice.domain.order.Order
+import com.example.orderservice.domain.order.OrderCreatedEvent
 import com.example.orderservice.domain.order.OrderCreatedEventPublisher
 import com.example.orderservice.domain.order.OrderRepository
 import org.springframework.stereotype.Service
@@ -31,7 +32,7 @@ class CreateOrderService(
 
         val savedOrder  = orderRepository.save(order)
 
-        orderCreatedEventPublisher.publish(savedOrder::class.qualifiedName?:"", resultWithDomainEvent.event)
+        orderCreatedEventPublisher.publish(OrderCreatedEvent::class.qualifiedName?:"", resultWithDomainEvent.event)
 
         return savedOrder.id
     }
