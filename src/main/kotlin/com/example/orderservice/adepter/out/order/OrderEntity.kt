@@ -20,6 +20,7 @@ class OrderEntity(
     val ordererId: UUID,
     @OneToMany(mappedBy = "orderEntity", cascade = [CascadeType.ALL])
     val usedRewards: MutableList<RewardEntity> = mutableListOf(),
+    @Enumerated(EnumType.STRING)
     val status: OrderStatus,
     val createdAt: Instant
 ) {

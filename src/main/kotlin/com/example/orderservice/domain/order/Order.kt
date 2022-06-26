@@ -14,9 +14,12 @@ class Order(
     val id : UUID,
     val ordererId : UUID,
     val usedRewards: List<Reward> = mutableListOf(),
-    val status: OrderStatus,
+    var status: OrderStatus,
     val createdAt: Instant
     ) {
+    fun createOrderSuccess() {
+        this.status = OrderStatus.WAITING_FOR_RECEPTION
+    }
 
 
     companion object {

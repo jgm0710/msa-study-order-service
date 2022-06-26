@@ -1,8 +1,7 @@
 package com.example.orderservice.adepter.out.order
 
 import com.example.orderservice.domain.order.*
-import java.util.UUID
-import java.util.concurrent.locks.ReentrantLock
+import java.util.*
 import javax.persistence.*
 
 /**
@@ -42,10 +41,6 @@ class RewardEntity(
                 value = value
             )
         }
-    }
-
-    fun setOrder(orderEntity: OrderEntity) {
-        this.orderEntity = orderEntity
     }
 
 }

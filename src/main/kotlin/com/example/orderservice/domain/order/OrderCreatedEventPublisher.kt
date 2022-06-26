@@ -1,7 +1,5 @@
 package com.example.orderservice.domain.order
 
-import java.util.*
-
 /**
  *
  *
@@ -9,6 +7,6 @@ import java.util.*
  * @since 2022/06/19
  * */
 interface OrderCreatedEventPublisher {
-    fun publish(aggregateType: String, orderId: UUID, orderCreatedEvent: OrderCreatedEvent)
+    fun publish(aggregateType: String, orderCreatedEvent: OrderCreatedEvent)
 
 }
